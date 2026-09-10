@@ -1,0 +1,4 @@
+import {runQueuedWork,runWorkPacket} from '../../lib/agent-runner.js';
+import {db} from '../../lib/db.js';
+function authorized(req){const s=process.env.PROCESSPILOT_RUN_SECRET;return Boolean(s&&req.headers.authorization===`Bearer ${s}`);}
+export default async function handler(req,res){if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});if(!authorized(req))return res.status(401).json({error:'Unauthorized'});try{const id=req.body?.work_packet_id;if(id){const rows=await db(`work_packets?id=eq.${encodeURIComponent(id)}&select=*&limit=1`);if(!rows?.[0])return res.status(404).json({error:'Work packet not found'});return res.status(200).json({result:await runWorkPacket(rows[0])});}const limit=Math.max(1,Math.min(Number(req.body?.limit||1),3));return res.status(200).json({results:await runQueuedWork(limit)});}catch(e){return res.status(500).json({error:e.message});}}
