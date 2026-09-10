@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "workflows": [
+    {"id":"opportunity-intake","name":"Opportunity Intake & Qualification","trigger":"scheduled source cycle or manual URL","steps":["source-monitor","opportunity-scout","dedup-agent","opportunity-analyst","fit-scorer","agency-researcher","incumbent-researcher","bid-no-bid","executive-brief"],"gate":"Opara pursuit decision","onApprove":"capture-plan","onDecline":"archive with rationale"},
+    {"id":"capture-plan","name":"Capture & Teaming","trigger":"approved pursuit","steps":["capture-analyst","partner-researcher","registration-analyst","deadline-monitor","outreach-drafter"],"gate":"Opara approval before partner/agency outreach","onApprove":"approved communication and proposal kickoff"},
+    {"id":"proposal-build","name":"Proposal Development","trigger":"approved pursuit","steps":["requirements-analyst","compliance-matrix","proposal-manager","past-performance","proposal-writer","technical-writer","executive-writer","proposal-reviewer","clause-analyst"],"gate":"Opara final package approval","onApprove":"submission-ready package"},
+    {"id":"pricing","name":"Pricing & Commercial Review","trigger":"proposal requires price","steps":["pricing-analyst","margin-reviewer","contracts-reviewer","executive-brief"],"gate":"Opara commercial approval","onApprove":"lock approved pricing"},
+    {"id":"outreach","name":"Controlled Outreach","trigger":"approved communication objective","steps":["outreach-drafter","executive-brief","outreach-coordinator"],"gate":"Opara external-send approval unless template is explicitly pre-approved","onApprove":"send and track response"},
+    {"id":"award-delivery","name":"Award to Delivery","trigger":"award or contract notice","steps":["award-monitor","contracts-reviewer","executive-brief","delivery-manager","performance-analyst"],"gate":"Opara contract acceptance/signature","onApprove":"kickoff and delivery governance"}
+  ]
+}
