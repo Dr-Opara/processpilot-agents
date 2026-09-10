@@ -1,21 +1,31 @@
-# ProcessPilot Agentic Employees
+# ProcessPilot Technologies LLC — Agentic Employees
 
-Standalone ProcessPilot Technologies LLC application for visualizing and operating the company’s agentic procurement workforce.
+Standalone AI-workforce application. This repository does **not** replace ProcessPilotTech.com.
 
-## Product boundary
+## Operating model
 
-This repository is intentionally separate from the corporate website at ProcessPilotTech.com. It deploys as its own Vercel application.
+The application models 30 specialized agents across Opportunity Intelligence, Procurement Operations, Vendor Research, Proposal Studio, Compliance & Risk, Pricing & Finance, Outreach, Contracts & Delivery, and Executive Operations. The central office role is **Chief of Staff**. Opara remains the human executive authority for consequential decisions.
 
-## Current scope
+Priority markets are **TX, DC, MD, VA**. The remaining states are expansion-ready. Scheduled procurement cycles are 8:00 AM, 10:00 AM, 12:00 PM, 2:00 PM, and 4:00 PM America/Chicago.
 
-- Executive command center for Opara
-- Agentic department visualization
-- 50-state + DC procurement coverage
-- Opportunity discovery, qualification, proposal, compliance, research, outreach, pricing, contracts, and delivery views
-- Human approval queue for consequential actions
-- Live activity and handoff visualization
-- Operating schedule visibility for 8 AM–4 PM Central cycles
+## Runtime truthfulness
+
+The UI must never invent execution. An agent is `working` only when a verified work packet/event exists. Otherwise it is `waiting`, `blocked`, `queued`, or `awaiting_approval`.
+
+`GET /api/status` reports runtime readiness based on configured integrations. `GET /api/agents` exposes the role registry. Agent definitions are in `data/agents.json`; governed workflows are in `data/workflows.json`; permissions are in `data/governance.json`; persistent tables are defined in `data/schema.sql`.
+
+## Work object model
+
+`Opportunity → Work Packet → Agent Assignment → Artifact → Handoff → Approval → Decision`
+
+The database schema includes opportunities, work packets, artifacts, handoffs, approvals, and verified agent events. `lib/runtime.js` contains the initial work-packet state transitions.
+
+## Integrations required for full activation
+
+The runtime currently checks for OpenAI model access, a persistent PostgreSQL/Supabase database, procurement-feed connectivity, and Gmail connectivity. Until those credentials/connectors are configured in Vercel, dependent employees intentionally show **Waiting for integration** rather than fake activity.
+
+External communications, price commitments, submissions, contract acceptance, signatures/attestations, credential management, and destructive record actions remain approval-gated according to `data/governance.json`.
 
 ## Deployment
 
-Imported into Vercel as the standalone `processpilot-agents` project.
+The repository is connected to the dedicated Vercel `processpilot-agents` project and is intended to publish independently at `processpilot-agents.vercel.app`.
