@@ -1,0 +1,1 @@
+import fs from 'node:fs';import path from 'node:path';export default function handler(req,res){const registry=JSON.parse(fs.readFileSync(path.join(process.cwd(),'data','agents.json'),'utf8'));res.setHeader('Cache-Control','public, max-age=60, s-maxage=300');res.status(200).json(registry)}
