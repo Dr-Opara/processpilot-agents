@@ -1,0 +1,10 @@
+{
+  "priority": [
+    {"code":"TX","name":"Texas","mode":"active","employee":"TX Procurement Agent"},
+    {"code":"DC","name":"District of Columbia","mode":"active","employee":"DC Procurement Agent"},
+    {"code":"MD","name":"Maryland","mode":"active","employee":"Maryland Procurement Agent"},
+    {"code":"VA","name":"Virginia","mode":"active","employee":"Virginia Procurement Agent"}
+  ],
+  "expansion":{"mode":"standby","coverage":"remaining 47 states","rule":"activate as ProcessPilot expands or when Opara explicitly opens a market"},
+  "scheduledCycles":{"timezone":"America/Chicago","times":["08:00","10:00","12:00","14:00","16:00"]}
+}
