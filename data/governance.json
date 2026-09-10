@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "principles": ["least privilege","trace every consequential action","separate research from execution","human approval for commitments","never fabricate work or completion"],
+  "actions": {
+    "search_public_sources":{"mode":"automatic","log":true},
+    "read_company_knowledge":{"mode":"automatic_by_role","log":true},
+    "create_or_update_opportunity":{"mode":"automatic","log":true},
+    "draft_internal_document":{"mode":"automatic","log":true},
+    "draft_external_email":{"mode":"automatic","log":true},
+    "send_external_email":{"mode":"opara_approval","log":true},
+    "contact_partner_or_agency":{"mode":"opara_approval","log":true},
+    "commit_price":{"mode":"opara_approval","log":true},
+    "submit_response":{"mode":"opara_approval","log":true},
+    "accept_contract":{"mode":"opara_approval","log":true},
+    "sign_or_attest":{"mode":"opara_only","log":true},
+    "manage_credentials":{"mode":"opara_only","log":true},
+    "delete_company_record":{"mode":"opara_approval","log":true}
+  },
+  "telemetry":{"illustrativeMustBeLabeled":true,"idleWhenNoWork":true,"prohibitFakeEvents":true,"verifiedEventsRequireSource":true}
+}
