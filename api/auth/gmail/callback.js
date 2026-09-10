@@ -1,3 +1,5 @@
+import {upsertIntegrationCredential,setIntegrationStatus} from '../../../lib/supabase-server.js';
+
 export default async function handler(req,res){
   const {code,error}=req.query;
   if(error)return res.status(400).send(`Gmail authorization failed: ${error}`);
@@ -11,6 +13,13 @@ export default async function handler(req,res){
   const tokens=await response.json();
   if(!response.ok)return res.status(400).send('Google did not issue Gmail authorization tokens.');
   if(!tokens.refresh_token)return res.status(400).send('Authorization succeeded but no refresh token was issued. Revoke the app grant and authorize again with consent.');
+  try{
+    await upsertIntegrationCredential('gmail_refresh_token',tokens.refresh_token,{scope:tokens.scope||null,token_type:tokens.token_type||null});
+    await setIntegrationStatus('gmail','ready','OAuth refresh token stored securely; Gmail API authorization is available.',{scope:tokens.scope||null});
+  }catch(e){
+    console.error('Gmail credential persistence failed',e);
+    return res.status(500).send('Google authorization succeeded, but ProcessPilot could not store the Gmail authorization securely. Check the Supabase server configuration in Vercel.');
+  }
   res.setHeader('Cache-Control','no-store');
-  res.status(200).send(`<!doctype html><html><body style="font-family:system-ui;background:#07111f;color:#e8f7ff;padding:40px"><h1>Gmail authorization successful</h1><p>Google issued the ProcessPilot Gmail authorization.</p><p>For security, the refresh token is not displayed in this page or written to GitHub. Complete the secure Vercel secret-storage step before enabling Gmail runtime.</p><p>You may close this window.</p></body></html>`);
+  res.status(200).send(`<!doctype html><html><body style="font-family:system-ui;background:#07111f;color:#e8f7ff;padding:40px"><h1>Gmail connected to ProcessPilot</h1><p>The Google authorization was stored securely in the ProcessPilot backend.</p><p>External email sending remains approval-gated.</p><p>You may close this window.</p></body></html>`);
 }
