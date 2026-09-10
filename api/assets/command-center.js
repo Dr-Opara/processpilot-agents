@@ -1,7 +1,8 @@
 import {getIntegrationCredential} from '../../lib/supabase-server.js';
 
 async function accessToken(){
-  const refresh=await getIntegrationCredential('gmail_refresh_token');
+  const credential=await getIntegrationCredential('gmail_refresh_token');
+  const refresh=credential?.secret_value;
   if(!refresh)throw new Error('Google authorization is not connected');
   const body=new URLSearchParams({client_id:process.env.GMAIL_CLIENT_ID,client_secret:process.env.GMAIL_CLIENT_SECRET,refresh_token:refresh,grant_type:'refresh_token'});
   const r=await fetch('https://oauth2.googleapis.com/token',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body});
