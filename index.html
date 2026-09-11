@@ -14,12 +14,12 @@
     <div><b>ProcessPilot</b><small>Technologies LLC</small></div>
     <span class="product">AGENTIC EMPLOYEES<small>AI WORKFORCE. REAL OPPORTUNITIES. REAL RESULTS.</small></span>
   </div>
-  <nav>
-    <button class="active">Live Office</button>
-    <button>Opportunities</button>
-    <button>Work Queue</button>
-    <button>Reports</button>
-    <button>Settings</button>
+  <nav id="topNav" aria-label="Primary navigation">
+    <button class="active" data-view="live-office">Live Office</button>
+    <button data-view="opportunities">Opportunities</button>
+    <button data-view="work-queue">Work Queue</button>
+    <button data-view="reports">Reports</button>
+    <button data-view="settings">Settings</button>
   </nav>
   <div class="top-tools">
     <div><small>Central Time (CT)</small><b id="clock">--:--</b></div>
@@ -28,15 +28,15 @@
 </header>
 
 <div class="app">
-  <aside class="sidebar">
-    <a class="active">⌂ <span>Home</span></a>
-    <a>◎ <span>Regional Agents</span></a>
-    <a>◈ <span>Opportunities</span></a>
-    <a>▤ <span>Proposals</span></a>
-    <a>↗ <span>Outreach</span></a>
-    <a>▣ <span>Contracts</span></a>
-    <a>▥ <span>Analytics</span></a>
-    <a>⚙ <span>Settings</span></a>
+  <aside class="sidebar" id="sideNav" aria-label="Workspace navigation">
+    <a href="#" class="active" data-view="live-office">⌂ <span>Home</span></a>
+    <a href="#" data-view="regional-agents">◎ <span>Regional Agents</span></a>
+    <a href="#" data-view="opportunities">◈ <span>Opportunities</span></a>
+    <a href="#" data-view="proposals">▤ <span>Proposals</span></a>
+    <a href="#" data-view="outreach">↗ <span>Outreach</span></a>
+    <a href="#" data-view="contracts">▣ <span>Contracts</span></a>
+    <a href="#" data-view="reports">▥ <span>Analytics</span></a>
+    <a href="#" data-view="settings">⚙ <span>Settings</span></a>
   </aside>
 
   <main>
