@@ -3,127 +3,156 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#020913">
-  <title>ProcessPilot Technologies LLC — AI Command Center</title>
+  <meta name="theme-color" content="#06101b">
+  <title>ProcessPilot Technologies LLC — AI Workforce Command Center</title>
   <link rel="stylesheet" href="/office.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <span class="brand-mark">P</span>
-      <div>
-        <strong>ProcessPilot</strong>
-        <small>Technologies LLC</small>
-        <em>AI Employees. Real Results.</em>
-      </div>
-    </div>
-    <nav id="mainNav" aria-label="Primary navigation">
-      <button class="active" data-view="command">Command Center</button>
-      <button data-view="opportunities">Opportunities</button>
-      <button data-view="proposals">Proposals</button>
-      <button data-view="outreach">Outreach</button>
-      <button data-view="knowledge">Knowledge Base</button>
-      <button data-view="analytics">Analytics</button>
-      <button data-view="settings">Settings</button>
-    </nav>
-    <div class="top-tools">
-      <div class="clock-wrap">
-        <b id="clock">--:--</b>
-        <small>Central Time (CT)</small>
-        <em id="dateLabel">--</em>
-      </div>
-      <div class="owner">
-        <span>OP</span>
-        <div><b>Opara</b><small>Owner / Chief of Staff</small></div>
-      </div>
-    </div>
-  </header>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">PP</span>
+    <div><b>ProcessPilot</b><small>Technologies LLC</small></div>
+    <span class="product">AGENTIC EMPLOYEES<small>AI WORKFORCE. REAL OPPORTUNITIES. REAL RESULTS.</small></span>
+  </div>
+  <nav>
+    <button class="active">Live Office</button>
+    <button>Opportunities</button>
+    <button>Work Queue</button>
+    <button>Reports</button>
+    <button>Settings</button>
+  </nav>
+  <div class="top-tools">
+    <div><small>Central Time (CT)</small><b id="clock">--:--</b></div>
+    <div class="next"><small>Next Run</small><b id="nextRun">--</b></div>
+  </div>
+</header>
+
+<div class="app">
+  <aside class="sidebar">
+    <a class="active">⌂ <span>Home</span></a>
+    <a>◎ <span>Regional Agents</span></a>
+    <a>◈ <span>Opportunities</span></a>
+    <a>▤ <span>Proposals</span></a>
+    <a>↗ <span>Outreach</span></a>
+    <a>▣ <span>Contracts</span></a>
+    <a>▥ <span>Analytics</span></a>
+    <a>⚙ <span>Settings</span></a>
+  </aside>
 
   <main>
     <section class="hero-title">
-      <div class="live-kicker"><span></span> LIVE OPERATIONS</div>
-      <h1>AI WORKFORCE. <span>REAL PROGRESS.</span></h1>
-      <p>FIND <i></i> ANALYZE <i></i> QUALIFY <i></i> RESEARCH <i></i> WRITE <i></i> COMPLY <i></i> WIN</p>
+      <div>
+        <span class="eyebrow">EXECUTIVE OPERATIONS</span>
+        <h1>AI Workforce Command Center</h1>
+        <p><b>4</b> Priority Market Agents <i></i> <b id="agentCount">30</b> Specialist Agents Behind the Scenes <i></i> 5 Daily Cycles <i></i> Governed & Secure</p>
+      </div>
+      <div class="market-strip"><span>TX</span><span>DC</span><span>MD</span><span>VA</span></div>
     </section>
 
-    <section class="command-grid">
-      <aside class="panel feed-panel">
-        <header><b>Live Activity Feed</b><span class="live-dot">● Live</span></header>
-        <div id="activity" class="activity"></div>
-        <div class="feed-footer"><span>Verified execution only</span><i class="wave"></i></div>
+    <div class="hero-grid">
+      <aside class="focus">
+        <article class="focus-primary">
+          <small>ACTIVE MARKET OPERATIONS</small>
+          <strong>TX · DC · MD · VA</strong>
+          <span>4 Regional Procurement Agents</span>
+        </article>
+        <article>
+          <small>BACKGROUND WORKFORCE</small>
+          <strong><span id="backgroundReady">0</span> Specialists</strong>
+          <span>Research · Proposal · Compliance · Pricing · Outreach</span>
+        </article>
+        <article>
+          <small>OPERATING MODEL</small>
+          <strong>Executive-Governed</strong>
+          <span>AI prepares. Opara decides.</span>
+        </article>
       </aside>
 
-      <section class="ops-floor" aria-label="ProcessPilot AI workforce operations floor">
-        <div class="ceiling-ring ring-one"></div>
-        <div class="ceiling-ring ring-two"></div>
-        <div class="city-line"></div>
-        <div class="floor-grid"></div>
-        <div class="data-lane lane-a"></div>
-        <div class="data-lane lane-b"></div>
-        <div class="data-lane lane-c"></div>
-
-        <button id="chiefCore" class="holo-core" aria-label="Open Chief of Staff queue">
-          <span class="core-orbit orbit-a"></span>
-          <span class="core-orbit orbit-b"></span>
-          <span class="core-globe">
-            <i class="longitude l1"></i><i class="longitude l2"></i>
-            <i class="latitude a1"></i><i class="latitude a2"></i>
-          </span>
-          <span class="core-logo">P</span>
-          <strong>ProcessPilot</strong>
-          <small>AI Workforce Command Core</small>
-          <b id="coreStatus">LIVE</b>
-        </button>
-
-        <div id="agentFloor" class="agent-floor"></div>
-
-        <div class="ambient-particles" aria-hidden="true">
-          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      <section id="network" class="network" aria-label="Regional procurement agent network">
+        <svg id="lines" viewBox="0 0 900 500" aria-hidden="true">
+          <defs>
+            <linearGradient id="flow" x1="0" x2="1"><stop offset="0" stop-color="#16d9ff"/><stop offset="1" stop-color="#ffc94f"/></linearGradient>
+          </defs>
+        </svg>
+        <div class="background-team" aria-hidden="true">
+          <span class="ghost g1">Research</span>
+          <span class="ghost g2">Proposal</span>
+          <span class="ghost g3">Compliance</span>
+          <span class="ghost g4">Pricing</span>
+          <span class="ghost g5">Outreach</span>
+          <span class="ghost g6">Contracts</span>
         </div>
-        <div class="floor-caption"><span id="readyCaption">30</span> AI EMPLOYEES RUNTIME-READY</div>
+        <div id="regionalAgents"></div>
+        <button id="chief" aria-label="Open Chief of Staff and CEO decision queue">
+          <span class="chief-ring ring-a"></span>
+          <span class="chief-ring ring-b"></span>
+          <span class="personIcon">OP</span>
+          <small class="role-kicker">FINAL AUTHORITY</small>
+          <strong>Opara</strong>
+          <em>Chief of Staff / CEO</em>
+          <b id="reviewBadge">0 decisions</b>
+          <small>Final Review · Approval · Decision</small>
+        </button>
+        <div class="decision-flow">Regional Intelligence → Specialist Work → Executive Decision</div>
       </section>
 
-      <aside class="right-rail">
-        <article class="panel clock-card compact-clock">
-          <strong id="railClock">--:--</strong><small id="railDate">--</small>
+      <aside class="right-summary">
+        <article>
+          <header><b>Regional Operations</b><span id="systemState">Checking…</span></header>
+          <p><strong id="regionalReady">0 / 4</strong> priority market agents connected</p>
+          <div id="regionalMini" class="regional-mini"></div>
         </article>
-        <article class="panel status-card">
-          <header><b>System Status</b></header>
-          <div class="system-state"><span></span><div><strong id="systemState">Checking...</strong><small id="readyCount">0 / 30 runtime-ready</small></div></div>
-          <div class="mini-health">
-            <div><i></i><small>AI Agents</small></div><div><i></i><small>Data</small></div><div><i></i><small>Integrations</small></div><div><i></i><small>Governance</small></div>
-          </div>
+        <article>
+          <header><b>Today’s Progress</b></header>
+          <ul id="progress"></ul>
         </article>
-        <article class="panel progress-card">
-          <header><b>Today's Progress</b><button id="progressDetails">View Details →</button></header>
-          <div class="progress-wrap">
-            <div class="progress-ring"><strong id="completedTotal">0</strong><small>Verified Events</small></div>
-            <ul id="progress"></ul>
-          </div>
-        </article>
-        <article class="panel source-card">
-          <header><b>Sources Monitor</b><span class="live-dot">● Live</span></header>
-          <ul id="sources" class="sources"></ul>
+        <article class="queue-card">
+          <header><b>Chief of Staff / CEO Queue</b><button id="openQueue">Review All →</button></header>
+          <div id="approvals" class="approvals"></div>
         </article>
       </aside>
-    </section>
+    </div>
 
-    <section class="metrics">
-      <article><span>◎</span><div><strong id="opportunityMetric">0</strong><small>Active Opportunities</small><em>Live pipeline</em></div></article>
-      <article><span>▤</span><div><strong id="proposalMetric">0</strong><small>Proposals In Progress</small><em>Governed drafting</em></div></article>
-      <article><span>↗</span><div><strong id="outreachMetric">0</strong><small>Outreach Pipeline</small><em>Approval gated</em></div></article>
-      <article><span>◇</span><div><strong id="approvalMetric">0</strong><small>Chief of Staff Queue</small><em>Awaiting decision</em></div></article>
-      <button id="viewAgents">View All Agents <b>→</b></button>
-    </section>
+    <div class="pipeline">
+      <span class="p1"><b>Discover</b><small>Regional Agents Find</small></span>
+      <span class="p2"><b>Qualify</b><small>Fit & Bid Analysis</small></span>
+      <span class="p3"><b>Research</b><small>Agency & Market Intel</small></span>
+      <span class="p4"><b>Build</b><small>Proposal & Pricing</small></span>
+      <span class="p5"><b>Comply</b><small>Risk & Requirements</small></span>
+      <span class="p6"><b>Opara</b><small>Final Approval & Decision</small></span>
+    </div>
 
-    <footer>“Turning Opportunities into Outcomes.” <small>ProcessPilot Technologies LLC</small></footer>
+    <section class="lower">
+      <article>
+        <header><b>● Live Activity Feed</b><span>Verified events only</span></header>
+        <div id="activity" class="activity"></div>
+      </article>
+      <article>
+        <header><b>Current Operating Cycle</b></header>
+        <div class="cycle">
+          <div class="cycleRing"><small>NEXT RUN</small><b id="countdown">--</b><span id="nextRunSmall">--</span></div>
+          <ol id="cycleList"></ol>
+        </div>
+      </article>
+      <article>
+        <header><b>Behind-the-Scenes Workforce</b><span>Specialist departments</span></header>
+        <div id="specialistSummary" class="specialist-summary"></div>
+        <div class="perf">
+          <div><strong id="availability">--</strong><small>API Availability</small></div>
+          <div><strong id="queueDepth">0</strong><small>Queued Work</small></div>
+          <div><strong id="blockedCount">0</strong><small>Blocked Specialists</small></div>
+          <div><strong>100%</strong><small>Executive Gated</small></div>
+        </div>
+      </article>
+    </section>
   </main>
+</div>
 
-  <dialog id="detail">
-    <button id="closeDetail" aria-label="Close">×</button>
-    <div id="detailBody"></div>
-  </dialog>
-  <div id="toast" role="status"></div>
-  <script type="module" src="/office.js"></script>
+<dialog id="detail">
+  <button id="closeDetail">×</button>
+  <div id="detailBody"></div>
+</dialog>
+<div id="toast"></div>
+<script type="module" src="/office.js"></script>
 </body>
 </html>
