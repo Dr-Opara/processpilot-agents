@@ -9,7 +9,12 @@ export default async function handler(req,res){
     'https://www.googleapis.com/auth/gmail.readonly',
     'https://www.googleapis.com/auth/gmail.compose',
     'https://www.googleapis.com/auth/gmail.modify',
-    'https://www.googleapis.com/auth/drive.readonly'
+    // Read-only access to Gmail "Send As" settings, needed by the callback's
+    // identity check to recognize an approved sender configured as a send-as
+    // alias rather than the account's primary address. Does not grant the
+    // ability to change any setting. drive.readonly was removed -- nothing
+    // in this codebase uses the Drive API.
+    'https://www.googleapis.com/auth/gmail.settings.basic'
   ].join(' ');
   let state;
   try{

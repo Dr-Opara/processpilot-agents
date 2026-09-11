@@ -33,10 +33,16 @@ export default async function handler(req,res){
 
   // Identity check: the OAuth state proves the request came from this app's
   // own /start redirect, but not which Google account completed consent.
-  // Reject any mailbox that isn't an approved ProcessPilot sender before
-  // persisting anything, so the integration can't be silently rebound to an
-  // unrelated account.
+  // eo@/contracts@processpilottech.com may be the account's primary mailbox
+  // OR a "send as" alias configured on a different primary account (Gmail
+  // requires an alias to be added and verified before it can be used in a
+  // From: header, which is exactly what lib/gmail.js's assertAllowedSender()
+  // relies on for drafting/sending). Checking only users.getProfile's
+  // primary emailAddress would incorrectly reject that legitimate alias
+  // setup, so an account is accepted if EITHER its primary mailbox OR one of
+  // its verified send-as identities is an approved ProcessPilot sender.
   let mailbox='';
+  let authorizedAlias=null;
   try{
     const profileRes=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/profile',{headers:{authorization:`Bearer ${tokens.access_token}`}});
     const profile=await profileRes.json();
@@ -45,11 +51,22 @@ export default async function handler(req,res){
     console.error('Gmail profile verification failed', e.message);
     return res.status(502).send('Could not verify the connected Google mailbox identity.');
   }
-  if(!ALLOWED_SENDERS.has(mailbox))return res.status(403).send(`The connected Google account (${mailbox||'unknown'}) is not an approved ProcessPilot mailbox. Reconnect using an approved account.`);
+  if(!ALLOWED_SENDERS.has(mailbox)){
+    try{
+      const sendAsRes=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/settings/sendAs',{headers:{authorization:`Bearer ${tokens.access_token}`}});
+      const sendAsData=await sendAsRes.json();
+      const match=(sendAsData.sendAs||[]).find(s=>ALLOWED_SENDERS.has(String(s.sendAsEmail||'').toLowerCase())&&s.verificationStatus==='accepted');
+      if(match)authorizedAlias=String(match.sendAsEmail).toLowerCase();
+    }catch(e){
+      console.error('Gmail send-as verification failed', e.message);
+      // fall through -- authorizedAlias stays null, request is rejected below
+    }
+  }
+  if(!ALLOWED_SENDERS.has(mailbox)&&!authorizedAlias)return res.status(403).send(`The connected Google account (${mailbox||'unknown'}) is not an approved ProcessPilot mailbox and has no verified send-as alias matching one. Reconnect using an approved account, or verify the alias in Gmail settings first.`);
 
   try{
-    await upsertIntegrationCredential('gmail_refresh_token',tokens.refresh_token,{scope:tokens.scope||null,token_type:tokens.token_type||null,mailbox});
-    await setIntegrationStatus('gmail','ready','OAuth refresh token stored securely; Gmail API authorization is available.',{scope:tokens.scope||null,mailbox});
+    await upsertIntegrationCredential('gmail_refresh_token',tokens.refresh_token,{scope:tokens.scope||null,token_type:tokens.token_type||null,mailbox,authorized_via:authorizedAlias?'send_as_alias':'primary_mailbox',authorized_alias:authorizedAlias});
+    await setIntegrationStatus('gmail','ready','OAuth refresh token stored securely; Gmail API authorization is available.',{scope:tokens.scope||null,mailbox,authorized_alias:authorizedAlias});
   }catch(e){
     console.error('Gmail credential persistence failed', e.message);
     return res.status(500).send('Google authorization succeeded, but ProcessPilot could not store the Gmail authorization securely. Check the Supabase server configuration in Vercel.');
