@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#06101b">
   <title>ProcessPilot Technologies LLC — AI Workforce Command Center</title>
   <link rel="stylesheet" href="/office.css">
+  <link rel="stylesheet" href="/humans.css">
 </head>
 <body>
 <header class="topbar">
@@ -77,9 +78,13 @@
         <div class="data-ribbon ribbon-c" aria-hidden="true"></div>
         <div class="ops-marquee"><span class="pulse"></span><b>PROCESSPILOT LIVE OPERATIONS</b><small>TX · DC · MD · VA · RESEARCH · OUTREACH · COMPLIANCE · PRICING · CONTRACTS · PROPOSAL</small></div>
 
-        <button id="chief" class="executive-station" aria-label="Open Chief of Staff and CEO workspace">
+        <button id="chief" class="executive-station human-executive" aria-label="Open Chief of Staff and CEO workspace">
           <span class="exec-glow"></span>
-          <span class="exec-avatar">OP</span>
+          <span class="exec-human" aria-hidden="true">
+            <span class="exec-hair"></span>
+            <span class="exec-face"><i class="exec-eye left"></i><i class="exec-eye right"></i><i class="exec-nose"></i><i class="exec-mouth"></i></span>
+            <span class="exec-neck"></span><span class="exec-suit"></span>
+          </span>
           <span class="exec-copy"><small>EXECUTIVE STATION</small><strong>Opara</strong><em>Chief of Staff / CEO</em></span>
           <span class="exec-queue" id="reviewBadge">0 decisions</span>
         </button>
@@ -132,7 +137,7 @@
         </div>
       </article>
       <article>
-        <header><b>Behind-the-Scenes Workforce</b><span>20 additional specialists</span></header>
+        <header><b>Behind-the-Scenes Workforce</b><span>24 additional specialists</span></header>
         <div id="specialistSummary" class="specialist-summary"></div>
         <div class="perf">
           <div><strong id="availability">--</strong><small>API Availability</small></div>
