@@ -18,7 +18,7 @@ The UI must never invent execution. An agent is `working` only when a verified w
 
 `Opportunity → Work Packet → Agent Assignment → Artifact → Handoff → Approval → Decision`
 
-The database schema includes opportunities, work packets, artifacts, handoffs, approvals, and verified agent events. `lib/runtime.js` contains the initial work-packet state transitions.
+The database schema includes opportunities, work packets, artifacts, handoffs, approvals, and verified agent events; `data/migrations/` tracks additive changes to that schema over time. `lib/agent-runner.js` contains the work-packet stage sequencing and governed approval gates, consulting `data/governance.json` via `lib/governance.js` before any consequential transition.
 
 ## Integrations required for full activation
 
