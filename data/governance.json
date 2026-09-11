@@ -5,6 +5,7 @@
     "search_public_sources":{"mode":"automatic","log":true},
     "read_company_knowledge":{"mode":"automatic_by_role","log":true},
     "create_or_update_opportunity":{"mode":"automatic","log":true},
+    "pursuit_decision":{"mode":"opara_approval","log":true},
     "draft_internal_document":{"mode":"automatic","log":true},
     "draft_external_email":{"mode":"automatic","log":true},
     "send_external_email":{"mode":"opara_approval","log":true},
