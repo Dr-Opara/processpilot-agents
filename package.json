@@ -2,5 +2,6 @@
   "name": "processpilot-agents",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "ProcessPilot Technologies LLC Agentic Employees command center"
 }
