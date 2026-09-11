@@ -1,3 +1,13 @@
+-- NOTE (Phase 1 stabilization, 2026-09): this file reflects only the original
+-- baseline tables. It undercounts what the application actually requires --
+-- see data/migrations/0001_reconcile_runtime_schema.sql for the additive
+-- migration that reconciles this baseline with what lib/db.js, lib/agent-
+-- runner.js and the API routes actually read/write (agent_runs,
+-- integration_status, integration_credentials, company_knowledge,
+-- document_templates, outreach_prospects, source_registry,
+-- opportunity_documents, runtime_failures, and activity_events). Treat this
+-- file as the historical baseline and data/migrations/ as the current source
+-- of truth going forward.
 create extension if not exists pgcrypto;
 create table if not exists opportunities(id uuid primary key default gen_random_uuid(), jurisdiction text not null, title text not null, agency text, source_url text not null, solicitation_number text, due_at timestamptz, value_estimate numeric, fit_score numeric, stage text not null default 'discovered', raw jsonb not null default '{}'::jsonb, created_at timestamptz not null default now(), updated_at timestamptz not null default now());
 create unique index if not exists opportunities_source_unique on opportunities(source_url);
