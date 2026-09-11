@@ -7,146 +7,167 @@
   <title>ProcessPilot Technologies LLC — AI Workforce Command Center</title>
   <link rel="stylesheet" href="/office.css">
   <link rel="stylesheet" href="/humans.css">
+  <link rel="stylesheet" href="/app.css">
 </head>
 <body>
 <header class="topbar">
   <div class="brand">
+    <button id="sidebarToggle" class="icon-btn" aria-label="Toggle navigation" aria-expanded="true">☰</button>
     <span class="logo">PP</span>
     <div><b>ProcessPilot</b><small>Technologies LLC</small></div>
     <span class="product">AGENTIC EMPLOYEES<small>AI WORKFORCE. REAL OPPORTUNITIES. REAL RESULTS.</small></span>
   </div>
   <nav id="topNav" aria-label="Primary navigation">
-    <button class="active" data-view="live-office">Live Office</button>
-    <button data-view="opportunities">Opportunities</button>
-    <button data-view="work-queue">Work Queue</button>
-    <button data-view="reports">Reports</button>
-    <button data-view="settings">Settings</button>
+    <a href="/live-office" data-route class="active">Live Office</a>
+    <a href="/opportunities" data-route>Opportunities</a>
+    <a href="/work-queue" data-route>Work Queue</a>
+    <a href="/proposals" data-route>Proposals</a>
+    <a href="/outreach" data-route>Outreach</a>
+    <a href="/contracts" data-route>Contracts</a>
+    <a href="/analytics" data-route>Analytics</a>
+    <a href="/agents" data-route>Agents</a>
+    <a href="/settings" data-route>Settings</a>
   </nav>
   <div class="top-tools">
+    <button id="commandTrigger" class="cmd-trigger" aria-label="Open command palette" title="Command palette (Ctrl/Cmd+K)">
+      <span>⌘K</span>
+    </button>
     <div><small>Central Time (CT)</small><b id="clock">--:--</b></div>
     <div class="next"><small>Next Run</small><b id="nextRun">--</b></div>
+    <button id="decisionsTrigger" class="decisions-trigger" aria-label="Open pending decisions">
+      <small>Pending Decisions</small><b id="decisionsCount">0</b>
+    </button>
   </div>
 </header>
 
 <div class="app">
   <aside class="sidebar" id="sideNav" aria-label="Workspace navigation">
-    <a href="#" class="active" data-view="live-office">⌂ <span>Home</span></a>
-    <a href="#" data-view="regional-agents">◎ <span>Live Agents</span></a>
-    <a href="#" data-view="opportunities">◈ <span>Opportunities</span></a>
-    <a href="#" data-view="proposals">▤ <span>Proposals</span></a>
-    <a href="#" data-view="outreach">↗ <span>Outreach</span></a>
-    <a href="#" data-view="contracts">▣ <span>Contracts</span></a>
-    <a href="#" data-view="reports">▥ <span>Analytics</span></a>
-    <a href="#" data-view="settings">⚙ <span>Settings</span></a>
+    <a href="/live-office" data-route class="active">⌂ <span>Home</span></a>
+    <a href="/live-office" data-route data-scroll="floor">◎ <span>Live Agents</span></a>
+    <a href="/opportunities" data-route>◈ <span>Opportunities</span></a>
+    <a href="/proposals" data-route>▤ <span>Proposals</span></a>
+    <a href="/outreach" data-route>↗ <span>Outreach</span></a>
+    <a href="/contracts" data-route>▣ <span>Contracts</span></a>
+    <a href="/analytics" data-route>▥ <span>Analytics</span></a>
+    <a href="/agents" data-route>☺ <span>Agents</span></a>
+    <a href="/settings" data-route>⚙ <span>Settings</span></a>
   </aside>
 
   <main>
-    <section class="hero-title">
-      <div>
-        <span class="eyebrow"><i></i> LIVE AI OPERATIONS FLOOR</span>
-        <h1>AI Workforce Command Center</h1>
-        <p><b>10</b> Visible Operations Agents <i></i> <b id="agentCount">30</b> Total Specialist Agents <i></i> 5 Daily Cycles <i></i> Governed & Secure</p>
-      </div>
-      <div class="market-strip"><span>TX</span><span>DC</span><span>MD</span><span>VA</span></div>
-    </section>
-
-    <div class="hero-grid">
-      <aside class="focus">
-        <article class="focus-primary">
-          <small>LIVE OFFICE</small>
-          <strong>10 Stations Online</strong>
-          <span>4 Regional + 6 Specialist Agents</span>
-        </article>
-        <article>
-          <small>BACKGROUND WORKFORCE</small>
-          <strong><span id="backgroundReady">0</span> Specialists</strong>
-          <span>Analysis · Capture · Writing · Delivery · Monitoring</span>
-        </article>
-        <article>
-          <small>EXECUTIVE OVERSIGHT</small>
-          <strong>Chief of Staff / CEO</strong>
-          <span>Decision queue and governance</span>
-        </article>
-      </aside>
-
-      <section id="network" class="network call-center" aria-label="ProcessPilot live AI operations floor">
-        <div class="office-ceiling" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="office-windows" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-        <div class="floor-perspective" aria-hidden="true"></div>
-        <div class="data-ribbon ribbon-a" aria-hidden="true"></div>
-        <div class="data-ribbon ribbon-b" aria-hidden="true"></div>
-        <div class="data-ribbon ribbon-c" aria-hidden="true"></div>
-        <div class="ops-marquee"><span class="pulse"></span><b>PROCESSPILOT LIVE OPERATIONS</b><small>TX · DC · MD · VA · RESEARCH · OUTREACH · COMPLIANCE · PRICING · CONTRACTS · PROPOSAL</small></div>
-
-        <button id="chief" class="executive-station human-executive" aria-label="Open Chief of Staff and CEO workspace">
-          <span class="exec-glow"></span>
-          <span class="exec-human" aria-hidden="true">
-            <span class="exec-hair"></span>
-            <span class="exec-face"><i class="exec-eye left"></i><i class="exec-eye right"></i><i class="exec-nose"></i><i class="exec-mouth"></i></span>
-            <span class="exec-neck"></span><span class="exec-suit"></span>
-          </span>
-          <span class="exec-copy"><small>EXECUTIVE STATION</small><strong>Opara</strong><em>Chief of Staff / CEO</em></span>
-          <span class="exec-queue" id="reviewBadge">0 decisions</span>
-        </button>
-
-        <svg id="lines" viewBox="0 0 1000 620" aria-hidden="true"><g id="livePaths"></g></svg>
-        <div id="liveStations" class="live-stations"></div>
-
-        <div class="background-team" aria-hidden="true">
-          <span class="ghost g1">Capture</span><span class="ghost g2">Requirements</span><span class="ghost g3">Technical</span><span class="ghost g4">Margin</span><span class="ghost g5">Delivery</span><span class="ghost g6">Monitoring</span>
+    <!-- Live Office: unchanged markup/animation logic from Phase 1-3. The
+         router shows/hides this whole section rather than re-rendering it,
+         so nothing about its DOM, CSS, or animation timing changes. -->
+    <section id="liveOfficeView">
+      <section class="hero-title">
+        <div>
+          <span class="eyebrow"><i></i> LIVE AI OPERATIONS FLOOR</span>
+          <h1>AI Workforce Command Center</h1>
+          <p><b>10</b> Visible Operations Agents <i></i> <b id="agentCount">30</b> Total Specialist Agents <i></i> 5 Daily Cycles <i></i> Governed & Secure</p>
         </div>
-        <div class="floor-legend"><span><i class="ready-dot"></i> Runtime ready</span><span><i class="work-dot"></i> Verified work</span><span><i class="approval-dot"></i> Approval gate</span></div>
+        <div class="market-strip"><span>TX</span><span>DC</span><span>MD</span><span>VA</span></div>
       </section>
 
-      <aside class="right-summary">
-        <article>
-          <header><b>Live Office Status</b><span id="systemState">Checking…</span></header>
-          <p><strong id="regionalReady">0 / 10</strong> visible agents connected</p>
-          <div id="regionalMini" class="regional-mini"></div>
-        </article>
-        <article>
-          <header><b>Today’s Progress</b></header>
-          <ul id="progress"></ul>
-        </article>
-        <article class="queue-card">
-          <header><b>Chief of Staff / CEO Queue</b><button id="openQueue">Review All →</button></header>
-          <div id="approvals" class="approvals"></div>
-        </article>
-      </aside>
-    </div>
+      <div class="hero-grid">
+        <aside class="focus">
+          <article class="focus-primary">
+            <small>LIVE OFFICE</small>
+            <strong>10 Stations Online</strong>
+            <span>4 Regional + 6 Specialist Agents</span>
+          </article>
+          <article>
+            <small>BACKGROUND WORKFORCE</small>
+            <strong><span id="backgroundReady">0</span> Specialists</strong>
+            <span>Analysis · Capture · Writing · Delivery · Monitoring</span>
+          </article>
+          <article>
+            <small>EXECUTIVE OVERSIGHT</small>
+            <strong>Chief of Staff / CEO</strong>
+            <span>Decision queue and governance</span>
+          </article>
+        </aside>
 
-    <div class="pipeline">
-      <span class="p1"><b>Discover</b><small>Regional Agents Find</small></span>
-      <span class="p2"><b>Qualify</b><small>Fit & Bid Analysis</small></span>
-      <span class="p3"><b>Research</b><small>Agency & Market Intel</small></span>
-      <span class="p4"><b>Build</b><small>Proposal & Pricing</small></span>
-      <span class="p5"><b>Comply</b><small>Risk & Requirements</small></span>
-      <span class="p6"><b>Executive</b><small>Governed Decision Queue</small></span>
-    </div>
+        <section id="network" class="network call-center" aria-label="ProcessPilot live AI operations floor">
+          <div class="office-ceiling" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="office-windows" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="floor-perspective" aria-hidden="true"></div>
+          <div class="data-ribbon ribbon-a" aria-hidden="true"></div>
+          <div class="data-ribbon ribbon-b" aria-hidden="true"></div>
+          <div class="data-ribbon ribbon-c" aria-hidden="true"></div>
+          <div class="ops-marquee"><span class="pulse"></span><b>PROCESSPILOT LIVE OPERATIONS</b><small>TX · DC · MD · VA · RESEARCH · OUTREACH · COMPLIANCE · PRICING · CONTRACTS · PROPOSAL</small></div>
 
-    <section class="lower">
-      <article>
-        <header><b>● Live Activity Feed</b><span>Verified events only</span></header>
-        <div id="activity" class="activity"></div>
-      </article>
-      <article>
-        <header><b>Current Operating Cycle</b></header>
-        <div class="cycle">
-          <div class="cycleRing"><small>NEXT RUN</small><b id="countdown">--</b><span id="nextRunSmall">--</span></div>
-          <ol id="cycleList"></ol>
-        </div>
-      </article>
-      <article>
-        <header><b>Behind-the-Scenes Workforce</b><span>24 additional specialists</span></header>
-        <div id="specialistSummary" class="specialist-summary"></div>
-        <div class="perf">
-          <div><strong id="availability">--</strong><small>API Availability</small></div>
-          <div><strong id="queueDepth">0</strong><small>Queued Work</small></div>
-          <div><strong id="blockedCount">0</strong><small>Blocked Specialists</small></div>
-          <div><strong>100%</strong><small>Governed Actions</small></div>
-        </div>
-      </article>
+          <button id="chief" class="executive-station human-executive" aria-label="Open Chief of Staff and CEO workspace">
+            <span class="exec-glow"></span>
+            <span class="exec-human" aria-hidden="true">
+              <span class="exec-hair"></span>
+              <span class="exec-face"><i class="exec-eye left"></i><i class="exec-eye right"></i><i class="exec-nose"></i><i class="exec-mouth"></i></span>
+              <span class="exec-neck"></span><span class="exec-suit"></span>
+            </span>
+            <span class="exec-copy"><small>EXECUTIVE STATION</small><strong>Opara</strong><em>Chief of Staff / CEO</em></span>
+            <span class="exec-queue" id="reviewBadge">0 decisions</span>
+          </button>
+
+          <svg id="lines" viewBox="0 0 1000 620" aria-hidden="true"><g id="livePaths"></g></svg>
+          <div id="liveStations" class="live-stations"></div>
+
+          <div class="background-team" aria-hidden="true">
+            <span class="ghost g1">Capture</span><span class="ghost g2">Requirements</span><span class="ghost g3">Technical</span><span class="ghost g4">Margin</span><span class="ghost g5">Delivery</span><span class="ghost g6">Monitoring</span>
+          </div>
+          <div class="floor-legend"><span><i class="ready-dot"></i> Runtime ready</span><span><i class="work-dot"></i> Verified work</span><span><i class="approval-dot"></i> Approval gate</span></div>
+        </section>
+
+        <aside class="right-summary">
+          <article>
+            <header><b>Live Office Status</b><span id="systemState">Checking…</span></header>
+            <p><strong id="regionalReady">0 / 10</strong> visible agents connected</p>
+            <div id="regionalMini" class="regional-mini"></div>
+          </article>
+          <article>
+            <header><b>Today’s Progress</b></header>
+            <ul id="progress"></ul>
+          </article>
+          <article class="queue-card">
+            <header><b>Chief of Staff / CEO Queue</b><button id="openQueue">Review All →</button></header>
+            <div id="approvals" class="approvals"></div>
+          </article>
+        </aside>
+      </div>
+
+      <div class="pipeline">
+        <span class="p1"><b>Discover</b><small>Regional Agents Find</small></span>
+        <span class="p2"><b>Qualify</b><small>Fit & Bid Analysis</small></span>
+        <span class="p3"><b>Research</b><small>Agency & Market Intel</small></span>
+        <span class="p4"><b>Build</b><small>Proposal & Pricing</small></span>
+        <span class="p5"><b>Comply</b><small>Risk & Requirements</small></span>
+        <span class="p6"><b>Executive</b><small>Governed Decision Queue</small></span>
+      </div>
+
+      <section class="lower">
+        <article>
+          <header><b>● Live Activity Feed</b><span>Verified events only</span></header>
+          <div id="activity" class="activity"></div>
+        </article>
+        <article>
+          <header><b>Current Operating Cycle</b></header>
+          <div class="cycle">
+            <div class="cycleRing"><small>NEXT RUN</small><b id="countdown">--</b><span id="nextRunSmall">--</span></div>
+            <ol id="cycleList"></ol>
+          </div>
+        </article>
+        <article>
+          <header><b>Behind-the-Scenes Workforce</b><span>24 additional specialists</span></header>
+          <div id="specialistSummary" class="specialist-summary"></div>
+          <div class="perf">
+            <div><strong id="availability">--</strong><small>API Availability</small></div>
+            <div><strong id="queueDepth">0</strong><small>Queued Work</small></div>
+            <div><strong id="blockedCount">0</strong><small>Blocked Specialists</small></div>
+            <div><strong>100%</strong><small>Governed Actions</small></div>
+          </div>
+        </article>
+      </section>
     </section>
+
+    <!-- Every other workspace renders here via router.js + pages/*.js -->
+    <section id="routedView" class="routed-view" hidden aria-live="polite"></section>
   </main>
 </div>
 
@@ -154,7 +175,22 @@
   <button id="closeDetail">×</button>
   <div id="detailBody"></div>
 </dialog>
+
+<dialog id="commandPalette" class="cmd-palette">
+  <input id="cmdInput" type="text" placeholder="Search opportunities, work packets, agents, pages…" autocomplete="off">
+  <div id="cmdResults" class="cmd-results"></div>
+</dialog>
+
+<div id="execBackdrop" class="drawer-backdrop"></div>
+<aside id="execDrawer" class="drawer" aria-label="Executive Command">
+  <header>
+    <div><b>Executive Command</b><div class="actor-badge" id="execActor"></div></div>
+    <button id="execClose" class="icon-btn" aria-label="Close Executive Command">×</button>
+  </header>
+  <div id="execBody"></div>
+</aside>
+
 <div id="toast"></div>
-<script type="module" src="/office.js"></script>
+<script type="module" src="/app.js"></script>
 </body>
 </html>

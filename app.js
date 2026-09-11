@@ -1,0 +1,36 @@
+import {registerRoute,setNotFound,startRouter} from './router.js';
+import {initLiveOffice} from './office.js';
+import {initShell} from './shell.js';
+import {initCommandPalette} from './command-palette.js';
+import * as opportunities from './pages/opportunities.js';
+import * as opportunityDetail from './pages/opportunity-detail.js';
+import * as workQueue from './pages/work-queue.js';
+import * as workDetail from './pages/work-detail.js';
+import * as agents from './pages/agents.js';
+import * as agentDetail from './pages/agent-detail.js';
+import * as settings from './pages/settings.js';
+import * as executive from './pages/executive.js';
+import * as analytics from './pages/analytics.js';
+import * as outreach from './pages/outreach.js';
+import * as contracts from './pages/contracts.js';
+import * as proposals from './pages/proposals.js';
+import * as notFound from './pages/not-found.js';
+
+registerRoute('/opportunities',opportunities.render);
+registerRoute('/opportunities/:id',opportunityDetail.render);
+registerRoute('/work-queue',workQueue.render);
+registerRoute('/work-queue/:id',workDetail.render);
+registerRoute('/agents',agents.render);
+registerRoute('/agents/:id',agentDetail.render);
+registerRoute('/settings',settings.render);
+registerRoute('/executive',executive.render);
+registerRoute('/analytics',analytics.render);
+registerRoute('/outreach',outreach.render);
+registerRoute('/contracts',contracts.render);
+registerRoute('/proposals',proposals.render);
+setNotFound(notFound.render);
+
+initShell();
+initCommandPalette();
+initLiveOffice();
+startRouter();
