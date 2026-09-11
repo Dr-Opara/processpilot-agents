@@ -1,3 +1,33 @@
+-- ============================================================================
+-- SUPERSEDED -- DO NOT RUN. Kept only as a historical record.
+--
+-- This migration was built against the assumption that data/schema.sql (the
+-- repo's old baseline file) reflected the live production schema, and that
+-- production was therefore missing everything schema.sql didn't define.
+--
+-- That assumption was wrong. Independent inspection of the live Supabase
+-- project (2026-09) confirmed the opposite: production already had the
+-- modern schema (17 tables) and the application code was already written
+-- against it -- data/schema.sql was the stale artifact, not production.
+--
+-- Reconciliation result: every column/table this file tries to add already
+-- existed in production before it was ever written (agent_runs,
+-- integration_status, integration_credentials, company_knowledge,
+-- document_templates, outreach_prospects, source_registry,
+-- opportunity_documents, runtime_failures, activity_events, and all of the
+-- opportunities/work_packets/artifacts/approvals columns below). It was also
+-- incomplete -- it doesn't know about artifacts.version, opportunities.naics/
+-- set_aside/estimated_value, or the agent_state/ui_assets tables, all
+-- confirmed to exist in production. If run, every statement here would have
+-- been a harmless no-op (IF NOT EXISTS / ON CONFLICT DO NOTHING throughout),
+-- but it adds zero value and should not be executed.
+--
+-- The correct current-state baseline is data/schema.sql and
+-- data/migrations/0000_production_baseline.sql, both written directly from
+-- confirmed production facts rather than this file's guesses.
+-- ============================================================================
+--
+-- Original header, preserved for context:
 -- Migration 0001: reconcile production schema with what the application code
 -- actually reads and writes.
 --
