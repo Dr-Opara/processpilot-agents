@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 
-const EXPECTED_SHA256='af7716820b3df56a608574fb1f5771f33700706e0a7062d89f4cfccad831373b';
+const EXPECTED_SHA256='117f07c6b02489f901db0cf79009b14cb4e20442e53045020c9cb965ea322425';
 const BUCKET='processpilot-assets';
 const OBJECT='command-center-reference.jpg';
 
@@ -15,7 +15,7 @@ export default async function handler(req,res){
     const bytes=Buffer.concat(chunks);const digest=crypto.createHash('sha256').update(bytes).digest('hex');
     if(digest!==EXPECTED_SHA256)return res.status(403).json({error:'Payload digest not authorized'});
     const {url,key}=config();await ensureBucket(url,key);
-    const upload=await fetch(`${url}/storage/v1/object/${BUCKET}/${OBJECT}`,{method:'POST',headers:{apikey:key,authorization:`Bearer ${key}`,'content-type':'image/jpeg','x-upsert':'true'},body:bytes});
+    const upload=await fetch(`${url}/storage/v1/object/${BUCKET}/${OBJECT}`,{method:'POST',headers:{apikey:key,authorization:`Bearer ${key}`,'content-type':'image/png','x-upsert':'true'},body:bytes});
     if(!upload.ok){const detail=await upload.text();throw new Error(`Asset upload failed (${upload.status}): ${detail.slice(0,300)}`);}
     return res.status(200).json({ok:true,sha256:digest,size:bytes.length});
   }catch(e){console.error('Reference asset upload failed',e);return res.status(500).json({error:e.message});}
