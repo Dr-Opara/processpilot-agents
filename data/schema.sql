@@ -4,9 +4,8 @@
 -- PRODUCTION, after independent inspection established that production
 -- already runs the modern schema described here and that the application
 -- code was already written against it. The previous version of this file
--- was a stale, pre-production draft; do not resurrect it. See
--- data/migrations/superseded/0001_reconcile_runtime_schema.sql.txt for the
--- full record of that correction.
+-- was a stale, pre-production draft; do not resurrect it (git history holds
+-- the full record if it's ever needed).
 --
 -- This file is a snapshot for provisioning a FRESH environment (local dev,
 -- staging, disaster recovery) so it creates the same 17-table structure
@@ -14,34 +13,21 @@
 -- production database -- every statement is IF NOT EXISTS / additive, so
 -- running it there would be a no-op, but that is not its purpose.
 -- data/migrations/0000_production_baseline.sql mirrors this file as the
--- first entry in the numbered migration history; keep both in sync when the
--- schema changes, and add new NNNN_*.sql files for anything beyond this
--- baseline (0002_oauth_state.sql is the first such addition).
+-- first entry in the numbered migration history (BOOTSTRAP / FRESH
+-- ENVIRONMENT ONLY -- DO NOT APPLY TO EXISTING PRODUCTION); keep both in
+-- sync when the schema changes, and add new NNNN_*.sql files for anything
+-- beyond this baseline (0002_oauth_state.sql is the first such addition).
 --
--- CONFIRMED vs INFERRED, by table:
---   * opportunities, work_packets: column list confirmed directly against
---     production by the application owner. Exact data types/constraints for
---     a few columns (naics, set_aside, estimated_value; the work_packets
---     status constraint, if any) are reasonable inferences, not confirmed
---     byte-for-byte -- flagged inline.
---   * activity_events, handoffs: table existence and shape confirmed;
---     columns match what the application code actually reads/writes.
---   * approvals, artifacts: table existence and most columns confirmed;
---     approvals.decision_by specifically is NOT confirmed (see the warning
---     at that table) even though the running code writes to it.
---   * agent_runs, source_registry, integration_status,
---     integration_credentials, company_knowledge, document_templates,
---     outreach_prospects, opportunity_documents, runtime_failures: table
---     existence confirmed in production; column lists are reverse-engineered
---     from every query the application code actually makes against them
---     (high confidence, since the code is confirmed to already work against
---     the real tables), not from direct introspection.
---   * agent_state, ui_assets: CONFIRMED TO EXIST in production, but no code
---     in this repository reads or writes either one, so their column shape
---     is completely unknown here. They are deliberately NOT defined below --
---     a fabricated guess would be worse than an acknowledged gap. Run the
---     introspection query in this repo's Phase 1 report against production
---     and add their real definitions once known.
+-- All 17 production tables are now defined below with independently
+-- confirmed column definitions: opportunities, work_packets, artifacts,
+-- handoffs, approvals, agent_runs, activity_events, source_registry,
+-- integration_status, integration_credentials, company_knowledge,
+-- document_templates, outreach_prospects, opportunity_documents,
+-- runtime_failures, agent_state, ui_assets. A few data types on
+-- opportunities (naics, set_aside, estimated_value) and the exact
+-- work_packets.status CHECK constraint (if any) remain reasonable
+-- inferences rather than byte-for-byte confirmed -- flagged inline where
+-- that's the case.
 --
 -- RLS: production has Row Level Security ENABLED on every one of its 17
 -- tables, with NO policies defined on any of them. All application access
@@ -146,32 +132,25 @@ create table if not exists handoffs(
 alter table handoffs enable row level security;
 
 -- ---------------------------------------------------------------------------
--- approvals
+-- approvals -- exact production definition, independently confirmed
 -- ---------------------------------------------------------------------------
 create table if not exists approvals(
   id uuid primary key default gen_random_uuid(),
-  opportunity_id uuid references opportunities(id),
-  work_packet_id uuid references work_packets(id) on delete cascade,
-  requested_by_agent_id text,
-  approval_type text,
-  title text,
+  opportunity_id uuid references opportunities(id) on delete cascade,
+  work_packet_id uuid references work_packets(id) on delete set null,
+  requested_by_agent_id text not null,
+  approval_type text not null,
+  title text not null,
   summary text,
   payload jsonb not null default '{}'::jsonb,
-  status text not null default 'pending',
-  -- WARNING: api/actions/approval.js writes decision_by='Opara' on every
-  -- decision, but this exact column name was NOT independently confirmed in
-  -- production (only decision_note was). All 3 current production approvals
-  -- are still 'pending' -- meaning this write path has not actually been
-  -- exercised in production yet. Verify this column name against real
-  -- introspection BEFORE the first live approval is decided, or that write
-  -- could fail on an unknown-column error.
+  status text not null default 'pending'
+    check (status in ('pending','approved','declined','returned','expired')),
   decision_by text,
   decision_note text,
   created_at timestamptz not null default now(),
   decided_at timestamptz
 );
-create index if not exists approvals_status_type on approvals(status, approval_type);
-create index if not exists approvals_work_packet on approvals(work_packet_id);
+create index if not exists approvals_status_idx on approvals(status, created_at desc);
 alter table approvals enable row level security;
 
 -- ---------------------------------------------------------------------------
@@ -263,8 +242,9 @@ alter table integration_status enable row level security;
 -- ---------------------------------------------------------------------------
 -- integration_credentials -- service-role only. secret_value is currently
 -- stored without application-level encryption (confirmed finding); do not
--- expose this table through any public route or the anon key, and see the
--- separate encryption-migration proposal delivered alongside this file.
+-- expose this table through any public route or the anon key. See
+-- data/migrations/PROPOSED_credential_encryption.md for a reviewed-not-
+-- executed plan to migrate this to Supabase Vault.
 -- ---------------------------------------------------------------------------
 create table if not exists integration_credentials(
   id uuid primary key default gen_random_uuid(),
@@ -367,11 +347,43 @@ create table if not exists runtime_failures(
 alter table runtime_failures enable row level security;
 
 -- ---------------------------------------------------------------------------
--- NOT DEFINED HERE: agent_state, ui_assets.
--- Both are confirmed to exist in production (17 tables total; 15 are
--- defined above). No code in this repository reads or writes either table,
--- so nothing here can responsibly infer their columns. Add their real
--- definitions once introspected -- see the Phase 1 report for the query to
--- run. A fresh environment built from this file alone will be missing these
--- two tables until then.
+-- agent_state -- exact production definition, independently confirmed.
+-- NOTE: no code in this repository currently reads or writes this table --
+-- api/status.js computes agentStates in memory from work_packets/department
+-- readiness instead of reading here. The schema already supports a
+-- persisted per-agent runtime status (ready/working/waiting/blocked/error/
+-- paused); wiring the runtime to actually use this table is a reasonable
+-- Phase 4 candidate, not done as part of this schema reconciliation.
 -- ---------------------------------------------------------------------------
+create table if not exists agent_state(
+  agent_id text primary key,
+  department text not null,
+  runtime_status text not null default 'waiting'
+    check (runtime_status in ('ready','working','waiting','blocked','error','paused')),
+  current_work_packet_id uuid references work_packets(id) on delete set null,
+  last_run_at timestamptz,
+  last_success_at timestamptz,
+  last_error text,
+  metadata jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now()
+);
+alter table agent_state enable row level security;
+
+-- ---------------------------------------------------------------------------
+-- ui_assets -- exact production definition, independently confirmed.
+-- NOTE: no code in this repository currently reads or writes this table.
+-- Its shape (mime_type/content_b64/sha256/byte_size keyed by asset_key)
+-- strongly resembles a DB-backed successor to the now-deleted
+-- api/assets/command-center.js image-serving endpoint (removed in Phase 1
+-- as unused/obsolete -- see git history). Left unwired deliberately; no
+-- Phase 1 code path uses it.
+-- ---------------------------------------------------------------------------
+create table if not exists ui_assets(
+  asset_key text primary key,
+  mime_type text not null,
+  content_b64 text not null default '',
+  sha256 text,
+  byte_size integer,
+  updated_at timestamptz not null default now()
+);
+alter table ui_assets enable row level security;

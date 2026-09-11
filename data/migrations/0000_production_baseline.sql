@@ -1,27 +1,30 @@
 -- Migration 0000: production baseline snapshot.
 --
--- This is the first entry in the numbered migration history, capturing the
--- schema production already had as of the 2026-09 Phase 1 stabilization
--- (confirmed by direct inspection of the live Supabase project -- 17
--- tables, application code already written against this shape).
+-- ============================================================================
+-- BOOTSTRAP / FRESH ENVIRONMENT ONLY
+-- DO NOT APPLY TO EXISTING PRODUCTION
+-- ============================================================================
 --
--- BOOTSTRAP ONLY. This is for provisioning a FRESH environment (local dev,
--- staging, disaster recovery) so it matches production's structure. It must
--- NOT be applied to the existing production database as though production
--- were missing this schema -- production already has it. Every statement is
--- additive (IF NOT EXISTS / ON CONFLICT DO NOTHING), so running it there
--- would be a harmless no-op, but that is not what this file is for.
+-- This is the first entry in the numbered migration history, capturing the
+-- full schema production already had as of the 2026-09 Phase 1
+-- stabilization (confirmed by direct, independent inspection of the live
+-- Supabase project -- all 17 tables, application code already written
+-- against this exact shape). It is for provisioning a FRESH environment
+-- (local dev, staging, disaster recovery) so it matches production's
+-- structure. Every statement is additive (IF NOT EXISTS / ON CONFLICT DO
+-- NOTHING), so running it against the existing production database would be
+-- a harmless no-op -- but that is not what this file is for, and it should
+-- not be run there.
 --
 -- This file's DDL is identical to data/schema.sql as of this date -- that
 -- file is the maintained, human-readable reference; keep both in sync, or
 -- retire this duplication once real migration tooling is adopted. See
--- data/schema.sql's header for the full confirmed-vs-inferred breakdown per
--- table, the RLS posture, and the two tables (agent_state, ui_assets)
--- deliberately left undefined pending introspection.
+-- data/schema.sql's header for the RLS posture and the few remaining
+-- inferred (not byte-for-byte confirmed) data types.
 --
 -- The next real, confirmed-necessary migration is 0002_oauth_state.sql
--- (oauth_states does not exist in production yet). There is no 0001 in the
--- runnable sequence -- see data/migrations/superseded/ for why.
+-- (oauth_states does not exist in production yet -- this is currently the
+-- ONLY confirmed actual pending production schema change).
 
 create extension if not exists pgcrypto;
 
@@ -98,21 +101,21 @@ alter table handoffs enable row level security;
 
 create table if not exists approvals(
   id uuid primary key default gen_random_uuid(),
-  opportunity_id uuid references opportunities(id),
-  work_packet_id uuid references work_packets(id) on delete cascade,
-  requested_by_agent_id text,
-  approval_type text,
-  title text,
+  opportunity_id uuid references opportunities(id) on delete cascade,
+  work_packet_id uuid references work_packets(id) on delete set null,
+  requested_by_agent_id text not null,
+  approval_type text not null,
+  title text not null,
   summary text,
   payload jsonb not null default '{}'::jsonb,
-  status text not null default 'pending',
-  decision_by text, -- NOT independently confirmed; see data/schema.sql warning
+  status text not null default 'pending'
+    check (status in ('pending','approved','declined','returned','expired')),
+  decision_by text,
   decision_note text,
   created_at timestamptz not null default now(),
   decided_at timestamptz
 );
-create index if not exists approvals_status_type on approvals(status, approval_type);
-create index if not exists approvals_work_packet on approvals(work_packet_id);
+create index if not exists approvals_status_idx on approvals(status, created_at desc);
 alter table approvals enable row level security;
 
 create table if not exists agent_runs(
@@ -275,4 +278,26 @@ create table if not exists runtime_failures(
 );
 alter table runtime_failures enable row level security;
 
--- agent_state and ui_assets intentionally omitted -- see data/schema.sql header.
+create table if not exists agent_state(
+  agent_id text primary key,
+  department text not null,
+  runtime_status text not null default 'waiting'
+    check (runtime_status in ('ready','working','waiting','blocked','error','paused')),
+  current_work_packet_id uuid references work_packets(id) on delete set null,
+  last_run_at timestamptz,
+  last_success_at timestamptz,
+  last_error text,
+  metadata jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now()
+);
+alter table agent_state enable row level security;
+
+create table if not exists ui_assets(
+  asset_key text primary key,
+  mime_type text not null,
+  content_b64 text not null default '',
+  sha256 text,
+  byte_size integer,
+  updated_at timestamptz not null default now()
+);
+alter table ui_assets enable row level security;
