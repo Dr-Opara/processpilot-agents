@@ -30,7 +30,7 @@
 <div class="app">
   <aside class="sidebar" id="sideNav" aria-label="Workspace navigation">
     <a href="#" class="active" data-view="live-office">⌂ <span>Home</span></a>
-    <a href="#" data-view="regional-agents">◎ <span>Regional Agents</span></a>
+    <a href="#" data-view="regional-agents">◎ <span>Live Agents</span></a>
     <a href="#" data-view="opportunities">◈ <span>Opportunities</span></a>
     <a href="#" data-view="proposals">▤ <span>Proposals</span></a>
     <a href="#" data-view="outreach">↗ <span>Outreach</span></a>
@@ -42,9 +42,9 @@
   <main>
     <section class="hero-title">
       <div>
-        <span class="eyebrow">EXECUTIVE OPERATIONS</span>
+        <span class="eyebrow"><i></i> LIVE AI OPERATIONS FLOOR</span>
         <h1>AI Workforce Command Center</h1>
-        <p><b>4</b> Priority Market Agents <i></i> <b id="agentCount">30</b> Specialist Agents Behind the Scenes <i></i> 5 Daily Cycles <i></i> Governed & Secure</p>
+        <p><b>10</b> Visible Operations Agents <i></i> <b id="agentCount">30</b> Total Specialist Agents <i></i> 5 Daily Cycles <i></i> Governed & Secure</p>
       </div>
       <div class="market-strip"><span>TX</span><span>DC</span><span>MD</span><span>VA</span></div>
     </section>
@@ -52,54 +52,51 @@
     <div class="hero-grid">
       <aside class="focus">
         <article class="focus-primary">
-          <small>ACTIVE MARKET OPERATIONS</small>
-          <strong>TX · DC · MD · VA</strong>
-          <span>4 Regional Procurement Agents</span>
+          <small>LIVE OFFICE</small>
+          <strong>10 Stations Online</strong>
+          <span>4 Regional + 6 Specialist Agents</span>
         </article>
         <article>
           <small>BACKGROUND WORKFORCE</small>
           <strong><span id="backgroundReady">0</span> Specialists</strong>
-          <span>Research · Proposal · Compliance · Pricing · Outreach</span>
+          <span>Analysis · Capture · Writing · Delivery · Monitoring</span>
         </article>
         <article>
-          <small>OPERATING MODEL</small>
-          <strong>Executive-Governed</strong>
-          <span>AI prepares. Opara decides.</span>
+          <small>EXECUTIVE OVERSIGHT</small>
+          <strong>Chief of Staff / CEO</strong>
+          <span>Decision queue and governance</span>
         </article>
       </aside>
 
-      <section id="network" class="network" aria-label="Regional procurement agent network">
-        <svg id="lines" viewBox="0 0 900 500" aria-hidden="true">
-          <defs>
-            <linearGradient id="flow" x1="0" x2="1"><stop offset="0" stop-color="#16d9ff"/><stop offset="1" stop-color="#ffc94f"/></linearGradient>
-          </defs>
-        </svg>
-        <div class="background-team" aria-hidden="true">
-          <span class="ghost g1">Research</span>
-          <span class="ghost g2">Proposal</span>
-          <span class="ghost g3">Compliance</span>
-          <span class="ghost g4">Pricing</span>
-          <span class="ghost g5">Outreach</span>
-          <span class="ghost g6">Contracts</span>
-        </div>
-        <div id="regionalAgents"></div>
-        <button id="chief" aria-label="Open Chief of Staff and CEO decision queue">
-          <span class="chief-ring ring-a"></span>
-          <span class="chief-ring ring-b"></span>
-          <span class="personIcon">OP</span>
-          <small class="role-kicker">FINAL AUTHORITY</small>
-          <strong>Opara</strong>
-          <em>Chief of Staff / CEO</em>
-          <b id="reviewBadge">0 decisions</b>
-          <small>Final Review · Approval · Decision</small>
+      <section id="network" class="network call-center" aria-label="ProcessPilot live AI operations floor">
+        <div class="office-ceiling" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="office-windows" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="floor-perspective" aria-hidden="true"></div>
+        <div class="data-ribbon ribbon-a" aria-hidden="true"></div>
+        <div class="data-ribbon ribbon-b" aria-hidden="true"></div>
+        <div class="data-ribbon ribbon-c" aria-hidden="true"></div>
+        <div class="ops-marquee"><span class="pulse"></span><b>PROCESSPILOT LIVE OPERATIONS</b><small>TX · DC · MD · VA · RESEARCH · OUTREACH · COMPLIANCE · PRICING · CONTRACTS · PROPOSAL</small></div>
+
+        <button id="chief" class="executive-station" aria-label="Open Chief of Staff and CEO workspace">
+          <span class="exec-glow"></span>
+          <span class="exec-avatar">OP</span>
+          <span class="exec-copy"><small>EXECUTIVE STATION</small><strong>Opara</strong><em>Chief of Staff / CEO</em></span>
+          <span class="exec-queue" id="reviewBadge">0 decisions</span>
         </button>
-        <div class="decision-flow">Regional Intelligence → Specialist Work → Executive Decision</div>
+
+        <svg id="lines" viewBox="0 0 1000 620" aria-hidden="true"><g id="livePaths"></g></svg>
+        <div id="liveStations" class="live-stations"></div>
+
+        <div class="background-team" aria-hidden="true">
+          <span class="ghost g1">Capture</span><span class="ghost g2">Requirements</span><span class="ghost g3">Technical</span><span class="ghost g4">Margin</span><span class="ghost g5">Delivery</span><span class="ghost g6">Monitoring</span>
+        </div>
+        <div class="floor-legend"><span><i class="ready-dot"></i> Runtime ready</span><span><i class="work-dot"></i> Verified work</span><span><i class="approval-dot"></i> Approval gate</span></div>
       </section>
 
       <aside class="right-summary">
         <article>
-          <header><b>Regional Operations</b><span id="systemState">Checking…</span></header>
-          <p><strong id="regionalReady">0 / 4</strong> priority market agents connected</p>
+          <header><b>Live Office Status</b><span id="systemState">Checking…</span></header>
+          <p><strong id="regionalReady">0 / 10</strong> visible agents connected</p>
           <div id="regionalMini" class="regional-mini"></div>
         </article>
         <article>
@@ -119,7 +116,7 @@
       <span class="p3"><b>Research</b><small>Agency & Market Intel</small></span>
       <span class="p4"><b>Build</b><small>Proposal & Pricing</small></span>
       <span class="p5"><b>Comply</b><small>Risk & Requirements</small></span>
-      <span class="p6"><b>Opara</b><small>Final Approval & Decision</small></span>
+      <span class="p6"><b>Executive</b><small>Governed Decision Queue</small></span>
     </div>
 
     <section class="lower">
@@ -135,13 +132,13 @@
         </div>
       </article>
       <article>
-        <header><b>Behind-the-Scenes Workforce</b><span>Specialist departments</span></header>
+        <header><b>Behind-the-Scenes Workforce</b><span>20 additional specialists</span></header>
         <div id="specialistSummary" class="specialist-summary"></div>
         <div class="perf">
           <div><strong id="availability">--</strong><small>API Availability</small></div>
           <div><strong id="queueDepth">0</strong><small>Queued Work</small></div>
           <div><strong id="blockedCount">0</strong><small>Blocked Specialists</small></div>
-          <div><strong>100%</strong><small>Executive Gated</small></div>
+          <div><strong>100%</strong><small>Governed Actions</small></div>
         </div>
       </article>
     </section>
