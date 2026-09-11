@@ -15,11 +15,11 @@ export default async function handler(req,res){
   try{
     const token=await accessToken();
     const id='1JMDPgRgPh92lvvgDzPjmrZvRt3VL_f9L';
-    const r=await fetch(`https://www.googleapis.com/drive/v3/files/${id}?alt=media`,{headers:{authorization:`Bearer ${token}`}});
-    if(!r.ok)throw new Error(`Drive artwork unavailable (${r.status})`);
+    const r=await fetch(`https://www.googleapis.com/drive/v3/files/${id}?alt=media&supportsAllDrives=true`,{headers:{authorization:`Bearer ${token}`}});
+    if(!r.ok){const detail=await r.text();console.error('Command center Drive fetch failed',r.status,detail.slice(0,1000));throw new Error(`Drive artwork unavailable (${r.status})`);}
     const bytes=Buffer.from(await r.arrayBuffer());
     res.setHeader('Content-Type','image/jpeg');
     res.setHeader('Cache-Control','private, max-age=3600, stale-while-revalidate=86400');
     res.status(200).send(bytes);
-  }catch(e){res.status(503).json({error:e.message,reauthorize:'/api/auth/gmail/start'});}
+  }catch(e){console.error('Command center artwork proxy failed',e.message);res.status(503).json({error:e.message,reauthorize:'/api/auth/gmail/start'});}
 }
