@@ -1,25 +1,16 @@
-import {getIntegrationCredential} from '../../lib/supabase-server.js';
-
-async function accessToken(){
-  const credential=await getIntegrationCredential('gmail_refresh_token');
-  const refresh=credential?.secret_value;
-  if(!refresh)throw new Error('Google authorization is not connected');
-  const body=new URLSearchParams({client_id:process.env.GMAIL_CLIENT_ID,client_secret:process.env.GMAIL_CLIENT_SECRET,refresh_token:refresh,grant_type:'refresh_token'});
-  const r=await fetch('https://oauth2.googleapis.com/token',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body});
-  const j=await r.json();
-  if(!r.ok)throw new Error('Google access token refresh failed');
-  return j.access_token;
-}
+const BUCKET='processpilot-assets';
+const OBJECT='command-center-reference.jpg';
 export default async function handler(req,res){
   if(req.method!=='GET')return res.status(405).end();
   try{
-    const token=await accessToken();
-    const id='1JMDPgRgPh92lvvgDzPjmrZvRt3VL_f9L';
-    const r=await fetch(`https://www.googleapis.com/drive/v3/files/${id}?alt=media&supportsAllDrives=true`,{headers:{authorization:`Bearer ${token}`}});
-    if(!r.ok){const detail=await r.text();console.error('Command center Drive fetch failed',r.status,detail.slice(0,1000));throw new Error(`Drive artwork unavailable (${r.status})`);}
+    const url=process.env.SUPABASE_URL,key=process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if(!url||!key)throw new Error('Supabase server credentials are not configured');
+    const r=await fetch(`${url}/storage/v1/object/${BUCKET}/${OBJECT}`,{headers:{apikey:key,authorization:`Bearer ${key}`}});
+    if(!r.ok)throw new Error(`Native command center artwork unavailable (${r.status})`);
     const bytes=Buffer.from(await r.arrayBuffer());
     res.setHeader('Content-Type','image/jpeg');
-    res.setHeader('Cache-Control','private, max-age=3600, stale-while-revalidate=86400');
-    res.status(200).send(bytes);
-  }catch(e){console.error('Command center artwork proxy failed',e.message);res.status(503).json({error:e.message,reauthorize:'/api/auth/gmail/start'});}
+    res.setHeader('Content-Length',String(bytes.length));
+    res.setHeader('Cache-Control','public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800');
+    return res.status(200).send(bytes);
+  }catch(e){console.error('Command center artwork failed',e.message);return res.status(503).json({error:e.message});}
 }
