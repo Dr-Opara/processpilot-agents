@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#06101b">
+  <title>Sign in — ProcessPilot</title>
+  <meta name="robots" content="noindex">
+  <style>
+    :root{color-scheme:dark}
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:radial-gradient(circle at 48% 8%,#0e2b46 0,#061421 28%,#020913 75%);color:#eef9ff;font:14px Inter,Segoe UI,system-ui,sans-serif;display:flex;align-items:center;justify-content:center}
+    .card{width:min(380px,92vw);border:1px solid #173f59;border-radius:16px;background:linear-gradient(145deg,#071a2bde,#06121fde);box-shadow:0 30px 80px #000a;padding:32px}
+    .brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+    .brand .logo{width:38px;height:38px;border:2px solid #e9fbff;border-radius:10px;display:grid;place-items:center;font-weight:900;box-shadow:0 0 22px #1bc8ff33}
+    .brand div small{display:block;color:#8ca6b8;font-size:9px;letter-spacing:.06em}
+    h1{font-size:16px;margin:0 0 4px}
+    p.sub{color:#7594aa;font-size:12px;margin:0 0 20px}
+    label{display:block;font-size:11px;color:#8ca6b8;margin:14px 0 5px;letter-spacing:.03em}
+    input{width:100%;background:#081826;border:1px solid #1c4359;color:#eef9ff;border-radius:9px;padding:11px 12px;font-size:13px;font-family:inherit}
+    input:focus{outline:none;border-color:#1ed8ff}
+    button{width:100%;margin-top:20px;border:1px solid #1f7a52;background:#0d2c1f;color:#7cf0bb;border-radius:9px;padding:11px;font-size:13px;cursor:pointer;font-family:inherit}
+    button:hover{background:#0f3a28}
+    button[disabled]{opacity:.5;cursor:not-allowed}
+    .error{margin-top:14px;color:#ffb3ba;font-size:12px;display:none}
+    .note{margin-top:20px;color:#5f8298;font-size:10.5px;line-height:1.5}
+  </style>
+</head>
+<body>
+  <form class="card" id="loginForm">
+    <div class="brand"><span class="logo">PP</span><div><b>ProcessPilot</b><small>Executive Sign-In</small></div></div>
+    <h1>Owner sign-in</h1>
+    <p class="sub">Sign in to access the Executive Command console and privileged actions.</p>
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" autocomplete="username" required>
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required>
+    <button type="submit" id="submitBtn">Sign in</button>
+    <div class="error" id="loginError"></div>
+    <p class="note">First time signing in? The owner account is created in the Supabase dashboard for this project (Authentication → Users → Add user), not on this page.</p>
+  </form>
+  <script type="module" src="/login.js"></script>
+</body>
+</html>
